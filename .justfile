@@ -8,3 +8,6 @@ pre-commit-setup:
 # run unit tests
 tests:
     poetry run pytest
+
+run:
+    poetry run poetry-aws-sam
