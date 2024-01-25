@@ -36,7 +36,7 @@ class AwsBuilder(BuilderInterface):
         target = build_dir / aws_lambda.path
         requirements_file = target / "requirements.txt"
         requirements_file.parent.mkdir(exist_ok=True, parents=True)
-        ExportLock().handle()
+        _ = ExportLock().handle(requirements_file)
 
         # requirements_file.write_text(data="\n".join(deps), encoding="utf-8")
         check_call(
@@ -59,7 +59,6 @@ class AwsBuilder(BuilderInterface):
         )
 
     def build_standard(self, directory: str, **_build_data) -> str:
-        self.config: AwsBuilderConfig
         try:
             # sam = Sam(sam_exec=self.config.sam_exec, template=self.config.template)
             sam = Sam(sam_exec="sam", template=Path.cwd() / Path("template.yml"))
@@ -72,7 +71,6 @@ class AwsBuilder(BuilderInterface):
         self.app.display_waiting("Building lambda functions ...")
         # result = sam.invoke_sam_build(build_dir=self.config.directory, params=self.config.sam_params)
         config_dir = str(Path.cwd() / ".aws-sam/build")
-        breakpoint()
         result = sam.invoke_sam_build(build_dir=config_dir, params=None)
         if result.returncode != 0:
             self.app.display_error(result.stderr)
@@ -105,6 +103,5 @@ class AwsBuilder(BuilderInterface):
         #             target.parent.mkdir(exist_ok=True, parents=True)
         #             if not target.exists():
         #                 copy(src=file.path, dst=target)
-        self.app.display_success("What is this")
         self.app.display_success("Build successfull 🚀")
         return directory

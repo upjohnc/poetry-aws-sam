@@ -109,10 +109,10 @@ class ExportLock:
         assert isinstance(application, Application)
         return application
 
-    def handle(self) -> int:
+    def handle(self, requirements_file: Path) -> int:
         fmt = "requirements.txt"
 
-        output = Path(".aws-sam/build/HelloWorldFunction/poetry_aws_sam/requirements.txt")
+        output = requirements_file
 
         # locker = self.poetry.locker
         # if not locker.is_locked()
