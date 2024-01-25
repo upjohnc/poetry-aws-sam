@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "poetry-aws-sam"
+version = "0.1.0"
+description = ""
+authors = ["Chad Upjohn <chad.upjohn@ameritas.com>"]
+readme = "README.md"
+packages = [{include = "poetry_aws_sam", from="src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+poetry-plugin-export = "1.6.*"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.0"
+pytest = "^7.4.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+poetry-aws-sam = "poetry_aws_sam.main:main_cli"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+src_paths = ["src", "tests"]
+
+[tool.pytest.ini_options]
+addopts = "-v"
+testpaths = [
+    "tests",
+]
+pythonpath = "src"
