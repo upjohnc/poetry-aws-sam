@@ -10,5 +10,5 @@ def main_cli():
     mine = "/Users/xxcxu/projects/github/poetry-aws-sam/src/"
 
     t = AwsBuilder(root=mine)
-    t.build_lambda()
-    # .build_standard('.aws-sam')
+    # t.build_lambda()
+    t.build_standard(".aws-sam")

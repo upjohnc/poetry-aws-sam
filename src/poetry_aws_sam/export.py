@@ -112,7 +112,7 @@ class ExportLock:
     def handle(self) -> int:
         fmt = "requirements.txt"
 
-        output = Path(".aws-sam/build/nelly/poetry_aws_sam/requirements.txt")
+        output = Path(".aws-sam/build/HelloWorldFunction/poetry_aws_sam/requirements.txt")
 
         # locker = self.poetry.locker
         # if not locker.is_locked()
