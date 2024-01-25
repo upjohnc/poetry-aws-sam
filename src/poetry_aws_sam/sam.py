@@ -8,21 +8,22 @@ from shutil import copy, rmtree
 from subprocess import PIPE, check_call  # nosec
 from typing import Any, Dict, List
 
-from hatchling.bridge.app import Application
-from hatchling.builders.plugin.interface import BuilderInterface, IncludedFile
-
 from poetry_aws_sam.aws import AwsLambda, Sam
+
+# from hatchling.bridge.app import Application
+# from hatchling.builders.plugin.interface import  IncludedFile
+from poetry_aws_sam.builder_interface import BuilderInterface
 from poetry_aws_sam.config import AwsBuilderConfig
 from poetry_aws_sam.export import ExportLock
 
 
-class AwsBuilder:
-    # class AwsBuilder(BuilderInterface):
+# class AwsBuilder:
+class AwsBuilder(BuilderInterface):
     def __init__(self, root):
-        self.app = Application()
+        # self.app = Application()
+        # self.root = root
 
-        # super().__init__(root=root)
-        self.root = root
+        super().__init__(root=root)
 
     def get_version_api(self) -> Dict:
         return {"standard": self.build_standard}
@@ -70,7 +71,8 @@ class AwsBuilder:
             raise
         self.app.display_waiting("Building lambda functions ...")
         # result = sam.invoke_sam_build(build_dir=self.config.directory, params=self.config.sam_params)
-        config_dir = "/Users/xxcxu/projects/github/poetry-aws-sam/.aws-sam/build"
+        config_dir = str(Path.cwd() / ".aws-sam/build")
+        breakpoint()
         result = sam.invoke_sam_build(build_dir=config_dir, params=None)
         if result.returncode != 0:
             self.app.display_error(result.stderr)
@@ -83,6 +85,7 @@ class AwsBuilder:
         for aws_lambda in sam.lambdas:
             self.app.display_info(f"{aws_lambda.name} ...", end=" ")
             # self.build_lambda(config_dir, aws_lambda=aws_lambda, shared_files=shared_files)
+            # self.build_lambda(self.config.directory, aws_lambda=aws_lambda)
             self.build_lambda(config_dir, aws_lambda=aws_lambda)
             self.app.display_success("success")
 
