@@ -437,6 +437,17 @@ paramiko = ["paramiko"]
 pgp = ["gpg"]
 
 [[package]]
+name = "editables"
+version = "0.5"
+description = "Editable installations"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "editables-0.5-py3-none-any.whl", hash = "sha256:61e5ffa82629e0d8bfe09bc44a07db3c1ab8ed1ce78a6980732870f19b5e7d4c"},
+    {file = "editables-0.5.tar.gz", hash = "sha256:309627d9b5c4adc0e668d8c6fa7bac1ba7c8c5d415c2d27f60f081f8e80d1de2"},
+]
+
+[[package]]
 name = "fancycompleter"
 version = "0.9.1"
 description = "colorful TAB completion for Python prompt"
@@ -480,6 +491,43 @@ files = [
 docs = ["furo (>=2023.9.10)", "sphinx (>=7.2.6)", "sphinx-autodoc-typehints (>=1.24)"]
 testing = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "diff-cover (>=8)", "pytest (>=7.4.3)", "pytest-cov (>=4.1)", "pytest-mock (>=3.12)", "pytest-timeout (>=2.2)"]
 typing = ["typing-extensions (>=4.8)"]
+
+[[package]]
+name = "hatch-aws"
+version = "1.1.0"
+description = "Hatch plugin for building AWS Lambda functions with SAM"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "hatch_aws-1.1.0-py3-none-any.whl", hash = "sha256:1a0dc69267719bf239cc3da837403db7fa141e9cec0225354c934bd1223df5a7"},
+    {file = "hatch_aws-1.1.0.tar.gz", hash = "sha256:891d0b7ba7e1007045e6ac85f3fee0093a78742dd66481bebb127e52abdec77b"},
+]
+
+[package.dependencies]
+hatchling = "*"
+pyyaml = "*"
+
+[package.extras]
+dev = ["bandit[toml]", "black", "isort", "mypy", "pylint", "types-pyyaml"]
+test = ["coverage", "pytest", "pytest-cov", "pytest-mock", "tomli-w"]
+
+[[package]]
+name = "hatchling"
+version = "1.21.1"
+description = "Modern, extensible Python build backend"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "hatchling-1.21.1-py3-none-any.whl", hash = "sha256:21e8c13f8458b219a91cb84e5b61c15bf786695d1c4fabc29e91e78f94bfe892"},
+    {file = "hatchling-1.21.1.tar.gz", hash = "sha256:bba440453a224e7d4478457fa2e8d8c3633765bafa02975a6b53b9bf917980bc"},
+]
+
+[package.dependencies]
+editables = ">=0.3"
+packaging = ">=21.3"
+pathspec = ">=0.10.1"
+pluggy = ">=1.0.0"
+trove-classifiers = "*"
 
 [[package]]
 name = "identify"
@@ -702,6 +750,17 @@ python-versions = ">=3.7"
 files = [
     {file = "packaging-23.2-py3-none-any.whl", hash = "sha256:8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7"},
     {file = "packaging-23.2.tar.gz", hash = "sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"},
+]
+
+[[package]]
+name = "pathspec"
+version = "0.12.1"
+description = "Utility library for gitignore style pattern matching of file paths."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pathspec-0.12.1-py3-none-any.whl", hash = "sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08"},
+    {file = "pathspec-0.12.1.tar.gz", hash = "sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712"},
 ]
 
 [[package]]
@@ -1375,4 +1434,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "aa1ee329c34e81917f930e09fe26ad95810310a77d0ac7263068fe53941d6e4f"
+content-hash = "465174d7f8be6eff52193643223e333ae60ead5fa76c2ac4137402ebbc07b58f"
