@@ -1,14 +1,14 @@
-from poetry_aws_sam.export import ExportLock
-from poetry_aws_sam.sam import AwsBuilder
+from pathlib import Path
 
-# def main_cli():
-#     z = ExportLock()
-#     z.handle()
+from poetry_aws_sam.aws import Config
+from poetry_aws_sam.sam import AwsBuilder
 
 
 def main_cli():
-    mine = "/Users/xxcxu/projects/github/poetry-aws-sam/src/"
+    config = Config(
+        root_dir=Path.cwd(),
+        sam_exec="sam",
+        template_name="template.yml",
+    )
 
-    t = AwsBuilder(root=mine)
-    # t.build_lambda()
-    t.build_standard(".aws-sam")
+    _ = AwsBuilder(config).build_standard()
