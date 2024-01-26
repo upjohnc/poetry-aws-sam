@@ -8,22 +8,22 @@ from shutil import copy, rmtree
 from subprocess import PIPE, check_call  # nosec
 from typing import Any, Dict, List
 
-from poetry_aws_sam.aws import AwsLambda, Sam
+from poetry_aws_sam.aws import Application, AwsLambda, Sam
 
 # from hatchling.bridge.app import Application
 # from hatchling.builders.plugin.interface import  IncludedFile
-from poetry_aws_sam.builder_interface import BuilderInterface
-from poetry_aws_sam.config import AwsBuilderConfig
+# from poetry_aws_sam.builder_interface import BuilderInterface
+# from poetry_aws_sam.config import AwsBuilderConfig
 from poetry_aws_sam.export import ExportLock
 
 
-# class AwsBuilder:
-class AwsBuilder(BuilderInterface):
+class AwsBuilder:
+    # class AwsBuilder(BuilderInterface):
     def __init__(self, root):
-        # self.app = Application()
-        # self.root = root
+        self.app = Application()
+        self.root = root
 
-        super().__init__(root=root)
+        # super().__init__(root=root)
 
     def get_version_api(self) -> Dict:
         return {"standard": self.build_standard}
