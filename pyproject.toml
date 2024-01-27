@@ -9,7 +9,7 @@ packages = [{include = "poetry_aws_sam", from="src"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 poetry-plugin-export = "1.6.*"
-aws-sam-cli = "^1.108.0"
+pyyaml = "^6.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.0"

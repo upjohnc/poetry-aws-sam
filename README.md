@@ -4,6 +4,8 @@ CLI tool to run the `sam build` on a poetry-based project.
 
 assume:
 - pyproject.toml in root dir.  Code looks for it to determine root dir of project.
+- you have installed `aws-sam-cli` through other means
+    - with homebrew: `brew install aws-sam-cli`
 
 ## Set up
 
