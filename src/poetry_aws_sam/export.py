@@ -51,7 +51,6 @@ class ExportLock:
 
     @property
     def non_optional_groups(self) -> set[str]:
-        # TODO: this should move into poetry-core
         return {group.name for group in self.poetry.package._dependency_groups.values() if not group.is_optional()}
 
     @property
