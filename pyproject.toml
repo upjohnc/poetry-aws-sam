@@ -10,6 +10,7 @@ packages = [{include = "poetry_aws_sam", from="src"}]
 python = "^3.11"
 poetry-plugin-export = "1.6.*"
 pyyaml = "^6.0.1"
+click = "^8.1.7"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.0"
