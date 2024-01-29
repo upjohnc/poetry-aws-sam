@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "poetry_aws_sam", from="src"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 poetry-plugin-export = "1.6.*"
 pyyaml = "^6.0.1"
 click = "^8.1.7"
