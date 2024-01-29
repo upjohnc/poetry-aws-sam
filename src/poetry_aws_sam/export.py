@@ -158,9 +158,9 @@ class ExportLock:
         exporter = Exporter(self.poetry, None)  # todo: figure out the IO thing
         exporter.only_groups(list(self.activated_groups))
         # exporter.with_extras(list(extras))
-        # exporter.with_hashes(not self.option("without-hashes"))
+        exporter.with_hashes(False)  # todo: check on adding config
         # exporter.with_credentials(self.option("with-credentials"))
         # exporter.with_urls(not self.option("without-urls"))
-        exporter.export(fmt, Path.cwd(), output)
+        exporter.export(fmt, Path.cwd(), str(output))
 
         return 0
