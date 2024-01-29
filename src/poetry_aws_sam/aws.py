@@ -17,9 +17,14 @@ class AwsLambda:
 @dataclass
 class Config:
     root_dir: Path
+    groups: dict
     sam_exec: str = "sam"
+    requirements_format: str = "requirements.txt"
     template_name: str = "template.yml"
-    sam_build_dir_name: str = ".aws-sam/builid"
+    sam_build_dir_name: str = ".aws-sam/build"
+    without_hashes: bool = True
+    with_credentials: bool = False
+    without_urls: bool = True
 
     @property
     def template_location(self) -> Path:
@@ -75,7 +80,7 @@ class Sam:
         )
 
 
-class Application:
+class AppDisplay:
     """
     The way output is displayed can be [configured](../config/hatch.md#terminal) by users.
 
@@ -85,7 +90,7 @@ class Application:
     """
 
     def __init__(self) -> None:
-        self.__verbosity = int(os.environ.get("HATCH_VERBOSE", "0")) - int(os.environ.get("HATCH_QUIET", "0"))
+        self.__verbosity = int(os.environ.get("POETRY_VERBOSE", "0")) - int(os.environ.get("POETRY_QUIET", "0"))
 
     @property
     def verbosity(self) -> int:

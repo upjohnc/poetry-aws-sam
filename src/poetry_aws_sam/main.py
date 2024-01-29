@@ -23,8 +23,13 @@ def find_root_dir() -> Path:
 def main_cli():
     config = Config(
         root_dir=find_root_dir(),
+        groups={"with": "dev"},
         sam_exec="sam",
+        requirements_format="requirements.txt",
         template_name="template.yml",
+        without_hashes=True,
+        with_credentials=True,
+        without_urls=False,
     )
 
     _ = AwsBuilder(config).build_standard()

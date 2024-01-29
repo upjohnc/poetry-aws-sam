@@ -3,13 +3,13 @@ from shlex import quote
 from subprocess import PIPE, check_call
 from typing import Dict
 
-from poetry_aws_sam.aws import Application, AwsLambda, Config, Sam
+from poetry_aws_sam.aws import AppDisplay, AwsLambda, Config, Sam
 from poetry_aws_sam.export import ExportLock
 
 
 class AwsBuilder:
     def __init__(self, config: Config):
-        self.app: Application = Application()
+        self.app: AppDisplay = AppDisplay()
         self.config: Config = config
 
     def get_version_api(self) -> Dict:
@@ -20,7 +20,7 @@ class AwsBuilder:
         target = build_dir / aws_lambda.path
         requirements_file = target / "requirements.txt"
         requirements_file.parent.mkdir(exist_ok=True, parents=True)
-        _ = ExportLock().handle(requirements_file)
+        _ = ExportLock(self.config).handle(requirements_file)
 
         check_call(
             [
