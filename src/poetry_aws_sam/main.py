@@ -28,9 +28,9 @@ def find_root_dir() -> Path:
 @click.option("--without_urls", is_flag=True, default=False)
 @click.option("--requirements_format", default="requirements.txt")
 @click.option("--template_name", default="template.yml")
-@click.option("--only_groups")
-@click.option("--with_groups")
-@click.option("--without_groups")
+@click.option("--only", "only_")
+@click.option("--with", "with_")
+@click.option("--without", "without_")
 # todo add help
 def main_cli(
     without_hashes,
@@ -38,14 +38,14 @@ def main_cli(
     without_urls,
     requirements_format,
     template_name,
-    only_groups,
-    with_groups,
-    without_groups,
+    only_,
+    with_,
+    without_,
 ):
     groups = dict()
-    groups["only"] = only_groups
-    groups["with"] = with_groups
-    groups["without"] = without_groups
+    groups["only"] = only_
+    groups["with"] = with_
+    groups["without"] = without_
     config = Config(
         root_dir=find_root_dir(),
         groups=groups,
