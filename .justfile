@@ -6,8 +6,8 @@ pre-commit-setup:
     poetry run pre-commit install
 
 # run unit tests
-tests:
-    poetry run pytest
+tests *args:
+    poetry run pytest {{args}}
 
-run:
-    poetry run poetry-aws-sam
+run *args:
+    poetry run poetry-aws-sam {{args}}
