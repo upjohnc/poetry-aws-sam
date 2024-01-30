@@ -24,8 +24,8 @@ def find_root_dir() -> Path:
 
 @click.command()
 @click.option("--without-hashes", is_flag=True, default=False, help="Create requirements file without hashes")
-@click.option("--with_credentials", is_flag=True, default=False, help="Create requirements file with credentials")
-@click.option("--without_urls", is_flag=True, default=False, help="Create requirements file without urls")
+@click.option("--with-credentials", is_flag=True, default=False, help="Create requirements file with credentials")
+@click.option("--without-urls", is_flag=True, default=False, help="Create requirements file without urls")
 @click.option(
     "--requirements_format", default="requirements.txt", help="File name of the requirements output from poetry"
 )
