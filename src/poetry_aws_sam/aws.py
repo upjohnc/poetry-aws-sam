@@ -82,7 +82,7 @@ class Sam:
         )
 
 
-class ChadApplication:
+class AppDisplay:
     _poetry: Poetry | None = None
 
     def __init__(self):

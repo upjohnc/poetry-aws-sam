@@ -1,34 +1,25 @@
 import sys
 from shlex import quote
 from subprocess import PIPE, check_call
-from typing import Any, Dict
+from typing import Dict
 
-from cleo.io.io import IO
-from poetry.console.application import Application
-
-from poetry_aws_sam.aws import AwsLambda, ChadApplication, Config, Sam
+from poetry_aws_sam.aws import AppDisplay, AwsLambda, Config, Sam
 from poetry_aws_sam.export import ExportLock
 
 
 class AwsBuilder:
     def __init__(self, config: Config):
-        # self._application: Application = Application()
-        # self.app: AppDisplay = AppDisplay()
         self.config: Config = config
-        self.chad = ChadApplication()
+        self.display = AppDisplay()
 
     def get_version_api(self) -> Dict:
         return {"standard": self.build_standard}
 
-    # @property
-    # def io(self) -> IO:
-    #     return self._application.create_io()
-
-    def abort(self, message: str = "", code: int = 1, **kwargs: Any) -> None:
+    def abort(self, message: str = "", code: int = 1) -> None:
         """
         Terminate the program with the given return code.
         """
-        self.chad.io.write_error_line(message)
+        self.display.io.write_error_line(message)
 
         sys.exit(code)
 
@@ -67,17 +58,17 @@ class AwsBuilder:
                 "Functions !Sub, !Ref and others are not supported yet. "
             )
             raise
-        self.chad.io.write_line("Building lambda functions ...")
+        self.display.io.write_line("Building lambda functions ...")
         build_dir = str(self.config.sam_build_location)
         result = sam.invoke_sam_build(build_dir=build_dir, params=None)
         if result.returncode != 0:
-            self.chad.io.write_error_line(result.stderr)
+            self.display.io.write_error_line(result.stderr)
             self.abort("SAM build failed!")
 
         for aws_lambda in sam.lambdas:
-            self.chad.io.write_line(f"{aws_lambda.name} ...")
+            self.display.io.write_line(f"{aws_lambda.name} ...")
             self.build_lambda(aws_lambda=aws_lambda)
-            self.chad.io.write_line("success")
+            self.display.io.write_line("success")
 
-        self.chad.io.write_line("Build successfull 🚀")
+        self.display.io.write_line("Build successfull 🚀")
         return build_dir
