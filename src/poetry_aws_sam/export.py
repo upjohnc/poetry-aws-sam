@@ -8,7 +8,7 @@ from poetry.console.exceptions import GroupNotFound
 from poetry.poetry import Poetry
 from poetry_plugin_export.exporter import Exporter
 
-from poetry_aws_sam.aws import AppDisplay, Config
+from poetry_aws_sam.aws import Config
 
 MAIN_GROUP = "main"
 
@@ -23,7 +23,6 @@ class ExportLock:
 
     def __init__(self, config: Config):
         self._application: Application = Application()
-        self._app_display: AppDisplay = AppDisplay()
         self.config = config
 
     @property
