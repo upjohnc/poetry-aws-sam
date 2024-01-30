@@ -52,7 +52,6 @@ class ExportLock:
 
     @property
     def activated_groups(self) -> set[str]:
-        # todo: add test for this method
         groups = {}
 
         for key in {"with", "without", "only"}:
