@@ -1,11 +1,13 @@
 from pathlib import Path
 
+import pytest
 from click.testing import CliRunner
 
 from poetry_aws_sam.aws import Config
 from poetry_aws_sam.main import main_cli
 
 
+@pytest.mark.click
 def test_cli_no_options(mocker):
     """
     Test when no arguments are set on the cli
@@ -30,6 +32,7 @@ def test_cli_no_options(mocker):
     assert result.exit_code == 0
 
 
+@pytest.mark.click
 def test_cli_groups(mocker):
     """
     Test that groups are built correctly from only, with, and without
@@ -53,6 +56,7 @@ def test_cli_groups(mocker):
     assert result.exit_code == 0
 
 
+@pytest.mark.click
 def test_cli_flags_on(mocker):
     """
     Test that the other flags are set in the Config correctly

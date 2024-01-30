@@ -39,3 +39,6 @@ testpaths = [
     "tests",
 ]
 pythonpath = "src"
+markers = [
+    "click: test cli call"
+]
