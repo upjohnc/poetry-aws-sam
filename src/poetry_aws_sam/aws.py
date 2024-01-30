@@ -5,6 +5,9 @@ from subprocess import run
 from typing import Dict, List, Optional
 
 import yaml
+from cleo.io.io import IO
+from poetry.console.application import Application
+from poetry.poetry import Poetry
 
 
 @dataclass
@@ -77,3 +80,32 @@ class Sam:
             capture_output=True,
             check=False,
         )
+
+
+class ChadApplication:
+    _poetry: Poetry | None = None
+
+    def __init__(self):
+        self._application = Application()
+
+    @property
+    def poetry(self) -> Poetry:
+        if self._poetry is None:
+            return self.get_application().poetry
+
+        return self._poetry
+
+    @property
+    def application(self) -> Application | None:
+        return self._application
+
+    @property
+    def io(self) -> IO:
+        return self._application.create_io()
+
+    def get_application(self) -> Application:
+        from poetry.console.application import Application
+
+        application = self.application
+        assert isinstance(application, Application)
+        return application
