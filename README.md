@@ -3,15 +3,15 @@
 CLI tool to run the `sam build` on a poetry-based project.
 
 assume:
-- pyproject.toml in root dir.  Code looks for it to determine root dir of project.
 - you have installed `aws-sam-cli` through other means
     - with homebrew: `brew install aws-sam-cli`
 
 ## Set up
 
-`pip install git+https://github.com/Chad-UpJohn_ameritas/poetry-aws-sam.git`
+`poetry add git+https://github.com/ameritascorp/APICOE-poetry-aws-sam.git`
 
-run: `poetry-aws-sam`
+This will add sam as a command in poetry. If you run `poetry list`, you will
+see `sam` as an option amongst the commands
 
 ## Working on poetry-aws-sam
 
