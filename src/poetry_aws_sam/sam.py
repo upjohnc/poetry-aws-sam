@@ -10,12 +10,14 @@ SAM_BUILD_DIR_NAME = ".aws-sam/build"
 
 
 class AwsBuilder:
-    root_dir = find_root_dir()
-
     def __init__(self, options, poetry, io):
         self.options = options
         self._io = io
         self.poetry = poetry
+
+    @property
+    def root_dir(self):
+        return find_root_dir(self.poetry)
 
     def get_version_api(self) -> Dict:
         return {"standard": self.build_standard}

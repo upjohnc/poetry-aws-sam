@@ -28,7 +28,6 @@ class SamCommand(GroupCommand):
             flag=False,
             default=SAM_TEMPLATE_TXT,
         ),
-        option("output", "o", "The name of the output file.", flag=False),
         option("without-hashes", None, "Exclude hashes from the exported file."),
         option(
             "without-urls",

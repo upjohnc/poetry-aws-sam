@@ -12,18 +12,8 @@ from poetry.poetry import Poetry
 ROOT_FILE = "pyproject.toml"
 
 
-def find_root_dir() -> Path:
-    present_dir = Path.cwd()
-
-    # assume that 3 levels or less
-    for _ in range(3):
-        check = [i for i in present_dir.glob("*") if ROOT_FILE in i.name]
-
-        if len(check) > 0:
-            break
-        present_dir = present_dir.parent
-
-    return present_dir
+def find_root_dir(poetry: Poetry) -> Path:
+    return poetry.pyproject.path.parent
 
 
 @dataclass

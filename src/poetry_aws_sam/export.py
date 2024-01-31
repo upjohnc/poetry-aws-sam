@@ -94,8 +94,6 @@ class ExportLock:
         if not Exporter.is_format_supported(fmt):
             raise ValueError(f"Invalid export format: {fmt}")
 
-        output = self.options("output")
-
         locker = self.poetry.locker
         if not locker.is_locked():
             self.line_error("<comment>The lock file does not exist. Locking.</comment>")
