@@ -2,24 +2,8 @@ from pathlib import Path
 
 import click
 
-from poetry_aws_sam.aws import Config
+from poetry_aws_sam.aws import Config, find_root_dir
 from poetry_aws_sam.sam import AwsBuilder
-
-ROOT_FILE = "pyproject.toml"
-
-
-def find_root_dir() -> Path:
-    present_dir = Path.cwd()
-
-    # assume that 3 levels or less
-    for _ in range(3):
-        check = [i for i in present_dir.glob("*") if ROOT_FILE in i.name]
-
-        if len(check) > 0:
-            break
-        present_dir = present_dir.parent
-
-    return present_dir
 
 
 @click.command()

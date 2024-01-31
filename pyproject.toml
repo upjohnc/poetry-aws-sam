@@ -11,6 +11,7 @@ python = "^3.10"
 poetry-plugin-export = "1.6.*"
 pyyaml = "^6.0.1"
 click = "^8.1.7"
+poetry = "^1.7.1"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.0"
@@ -24,6 +25,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 poetry-aws-sam = "poetry_aws_sam.main:main_cli"
+
+[tool.poetry.plugins."poetry.application.plugin"]
+poetry-aws-sam-plugin = "poetry_aws_sam.plugin:PoetryAwsSamPlugin"
 
 [tool.black]
 line-length = 120

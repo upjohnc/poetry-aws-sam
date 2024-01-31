@@ -2,3 +2,5 @@ __pycache__/
 .pytest_cache/
 requirements.txt
 .aws-sam/
+.venv/
+venv/

@@ -9,6 +9,22 @@ from cleo.io.io import IO
 from poetry.console.application import Application
 from poetry.poetry import Poetry
 
+ROOT_FILE = "pyproject.toml"
+
+
+def find_root_dir() -> Path:
+    present_dir = Path.cwd()
+
+    # assume that 3 levels or less
+    for _ in range(3):
+        check = [i for i in present_dir.glob("*") if ROOT_FILE in i.name]
+
+        if len(check) > 0:
+            break
+        present_dir = present_dir.parent
+
+    return present_dir
+
 
 @dataclass
 class AwsLambda:
@@ -80,32 +96,3 @@ class Sam:
             capture_output=True,
             check=False,
         )
-
-
-class AppDisplay:
-    _poetry: Poetry | None = None
-
-    def __init__(self):
-        self._application = Application()
-
-    @property
-    def poetry(self) -> Poetry:
-        if self._poetry is None:
-            return self.get_application().poetry
-
-        return self._poetry
-
-    @property
-    def application(self) -> Application | None:
-        return self._application
-
-    @property
-    def io(self) -> IO:
-        return self._application.create_io()
-
-    def get_application(self) -> Application:
-        from poetry.console.application import Application
-
-        application = self.application
-        assert isinstance(application, Application)
-        return application

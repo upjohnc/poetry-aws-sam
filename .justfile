@@ -11,3 +11,6 @@ tests *args:
 
 run *args:
     poetry run poetry-aws-sam {{args}}
+
+poetry *args:
+     .venv/bin/poetry {{args}}
