@@ -8,6 +8,8 @@ from poetry.console.exceptions import GroupNotFound
 from poetry.core.packages.dependency_group import MAIN_GROUP
 from poetry_plugin_export.exporter import Exporter
 
+FORMAT_REQUIREMENTS_TXT = "requirements.txt"
+
 
 class ExportLock:
     """
@@ -89,7 +91,7 @@ class ExportLock:
         return {MAIN_GROUP}
 
     def handle(self, requirements_file: Path) -> int:
-        fmt = self.options("requirements_format")
+        fmt = FORMAT_REQUIREMENTS_TXT
 
         if not Exporter.is_format_supported(fmt):
             raise ValueError(f"Invalid export format: {fmt}")
