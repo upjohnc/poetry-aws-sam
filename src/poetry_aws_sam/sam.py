@@ -11,7 +11,7 @@ SAM_BUILD_DIR_NAME = ".aws-sam/build"
 
 class AwsBuilder:
     def __init__(self, options, poetry, io):
-        self.options = options
+        self.config = options
         self._io = io
         self.poetry = poetry
 
@@ -39,7 +39,7 @@ class AwsBuilder:
         target = build_dir / aws_lambda.path
         requirements_file = target / "requirements.txt"
         requirements_file.parent.mkdir(exist_ok=True, parents=True)
-        _ = ExportLock(self.options, self.poetry, self._io).handle(requirements_file)
+        _ = ExportLock(self.config, self.poetry, self._io).handle(requirements_file)
 
         check_call(
             [
@@ -62,7 +62,7 @@ class AwsBuilder:
 
     def build_standard(self) -> int:
         try:
-            sam = Sam(sam_exec="sam", template=self.root_dir / self.options("sam_template"))
+            sam = Sam(sam_exec="sam", template=self.root_dir / self.config("sam_template"))
         except AttributeError:
             self.abort(
                 "Unsupported type for a 'CodeUri' or 'Handler'. Only string is supported."

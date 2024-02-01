@@ -9,8 +9,6 @@ from cleo.io.io import IO
 from poetry.console.application import Application
 from poetry.poetry import Poetry
 
-ROOT_FILE = "pyproject.toml"
-
 
 def find_root_dir(poetry: Poetry) -> Path:
     return poetry.pyproject.path.parent
@@ -20,27 +18,6 @@ def find_root_dir(poetry: Poetry) -> Path:
 class AwsLambda:
     name: str
     path: Path
-
-
-@dataclass
-class Config:
-    root_dir: Path
-    groups: dict
-    sam_exec: str = "sam"
-    requirements_format: str = "requirements.txt"
-    template_name: str = "template.yml"
-    sam_build_dir_name: str = ".aws-sam/build"
-    without_hashes: bool = True
-    with_credentials: bool = False
-    without_urls: bool = True
-
-    @property
-    def template_location(self) -> Path:
-        return self.root_dir / self.template_name
-
-    @property
-    def sam_build_location(self) -> Path:
-        return self.root_dir / self.sam_build_dir_name
 
 
 class Sam:
