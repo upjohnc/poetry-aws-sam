@@ -5,7 +5,7 @@ from poetry.plugins.application_plugin import ApplicationPlugin
 
 from poetry_aws_sam.sam import AwsBuilder
 
-SAM_TEMPLATE_TXT = "template.yml"
+SAM_TEMPLATE_TXT = "template.yaml"
 
 
 class SamCommand(GroupCommand):
