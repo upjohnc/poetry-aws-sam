@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry-aws-sam"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = ["Chad Upjohn <chad.upjohn@ameritas.com>"]
 readme = "README.md"
