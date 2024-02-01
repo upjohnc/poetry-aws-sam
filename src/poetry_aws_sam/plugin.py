@@ -14,7 +14,7 @@ class SamCommand(GroupCommand):
 
     options = [
         option(
-            "sam_template",
+            "sam-template",
             "s",
             "Name of sam template",
             flag=False,
