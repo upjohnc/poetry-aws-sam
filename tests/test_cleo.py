@@ -9,20 +9,18 @@ from poetry_aws_sam.aws import AwsLambda
 from poetry_aws_sam.plugin import SAM_TEMPLATE_TXT, SamCommand
 from poetry_aws_sam.sam import SAM_BUILD_DIR_NAME
 
-
-class FakeResult:
-    returncode = 0
-
-
 fake_aws_lambda_one = AwsLambda(name="1", path=Path("12"))
 fake_aws_lambda_two = AwsLambda(name="2", path=Path("aa"))
 
 
 def test_execute_one_lambda(mocker):
     """
-    no parameters passed
-    one lambda
-    mock out build_lambda
+    Test a single lambda build
+
+    Parameter
+    - no parameters passed
+    - one lambda
+    - mock out build_lambda method
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -44,18 +42,24 @@ def test_execute_one_lambda(mocker):
     command_tester.execute()
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / SAM_TEMPLATE_TXT)
+    # test: parameters passed correctly to the sam build function
     patch_sam.return_value.invoke_sam_build.assert_called_once_with(
         build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
     )
+    # test: build lambda called with the correct aws_lambda data
     patch_build_lambda.assert_called_once_with(aws_lambda=fake_aws_lambda_one)
 
 
 def test_execute_two_lambda(mocker):
     """
-    no parameters passed
-    two lambda
-    mock out build_lambda
+    Test two lambdas buid
+
+    Parameters:
+    - no parameters passed
+    - two lambdas
+    - mock out build_lambda
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -77,12 +81,16 @@ def test_execute_two_lambda(mocker):
     command_tester.execute()
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / SAM_TEMPLATE_TXT)
+    # test: parameters passed correctly to the sam build function
     patch_sam.return_value.invoke_sam_build.assert_called_once_with(
         build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
     )
 
+    # test that build lambda only called twice
     assert patch_build_lambda.call_count == 2
+    # test: build lambda called with the correct aws_lambda data
     first_call = patch_build_lambda.call_args_list[0]
     second_call = patch_build_lambda.call_args_list[1]
     assert first_call.kwargs["aws_lambda"] == fake_aws_lambda_one
@@ -91,9 +99,12 @@ def test_execute_two_lambda(mocker):
 
 def test_execute_no_lambdas(mocker):
     """
-    no parameters passed
-    no lambda
-    mock out build_lambda
+    Test that no lambdas are built
+
+    Parameters:
+    - no parameters passed
+    - no lambda
+    - mock out build_lambda
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -115,18 +126,23 @@ def test_execute_no_lambdas(mocker):
     command_tester.execute()
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / SAM_TEMPLATE_TXT)
+    # test: parameters passed correctly to the sam build function
     patch_sam.return_value.invoke_sam_build.assert_called_once_with(
         build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
     )
 
+    # test: build lambda called with the correct aws_lambda data
     patch_build_lambda.assert_not_called()
+    # confirm that the script completes to the end
     assert "Build successful" in command_tester.io.fetch_output()
 
 
 def test_execute_attribute_error(mocker):
     """
-    check that attributeerrro from Sam aborts
+    Test that a call to create an instance of Sam
+    returns an AttributeError. Should abort.
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -143,15 +159,18 @@ def test_execute_attribute_error(mocker):
         command_tester.execute()
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / SAM_TEMPLATE_TXT)
+    # test: the exit is 1 on a system exit call
     assert wrapped_exit.type == SystemExit
     assert wrapped_exit.value.code == 1
+    # test: wording of exit includes codeuri and handler
     assert "Unsupported type for a 'CodeUri' or 'Handler'." in command_tester.io.fetch_error()
 
 
 def test_execute_non_zero(mocker):
     """
-    sam build returns non zero code
+    Test a non-zero return when the sam build runs
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -161,7 +180,7 @@ def test_execute_non_zero(mocker):
 
     _ = mocker.patch("poetry_aws_sam.sam.AwsBuilder.root_dir", new_callable=PropertyMock(return_value=fake_root_dir))
 
-    patch_build_lambda = mocker.patch("poetry_aws_sam.sam.AwsBuilder.build_lambda")
+    _ = mocker.patch("poetry_aws_sam.sam.AwsBuilder.build_lambda")
 
     # When
     application = Application()
@@ -173,21 +192,26 @@ def test_execute_non_zero(mocker):
         command_tester.execute()
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / SAM_TEMPLATE_TXT)
+    # test: parameters passed correctly to the sam build function
     patch_sam.return_value.invoke_sam_build.assert_called_once_with(
         build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
     )
+    # test: system exit with 1
     assert wrapped_exit.type == SystemExit
     assert wrapped_exit.value.code == 1
+    # test: wording of exit
     assert "SAM build failed!" in command_tester.io.fetch_error()
 
 
-# # test build_location
 def test_execute_build_lambda(mocker):
     """
-    no parameters passed
-    one lambda
-    mock out build_lambda
+    Test that the call to the build_lambda from build_standard
+
+    Parameters:
+    - no parameters passed
+    - one lambda
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -212,25 +236,26 @@ def test_execute_build_lambda(mocker):
     command_tester.execute()
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / SAM_TEMPLATE_TXT)
+    # test: parameters passed correctly to the sam build function
     patch_sam.return_value.invoke_sam_build.assert_called_once_with(
         build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
     )
 
+    # test: ExportLock handle is called with the requirements file
     patch_export_handle.assert_called_once_with(Path(expected_requirements_file))
 
+    # test: pip call has the expected parameters
     patch_check_call.assert_called_once()
     patch_check_call_args = patch_check_call.call_args[0][0]
     assert expected_requirements_file in patch_check_call_args
     assert "fake_root/.aws-sam/build/1" in patch_check_call_args
 
 
-# passing parameters
 def test_execute_passing_parameters(mocker):
     """
-    no parameters passed
-    one lambda
-    mock out build_lambda
+    Test that passing parameters functions as expected
     """
     # Given
     fake_root_dir = Path("fake_root")
@@ -258,14 +283,19 @@ def test_execute_passing_parameters(mocker):
     )
 
     # Then
+    # test: parameters correctly passed to Sam()
     patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / fake_template)
+    # test: parameters passed correctly to the sam build function
     patch_sam.return_value.invoke_sam_build.assert_called_once_with(
         build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
     )
 
+    # test: ExportLock handle is called with the requirements file
     patch_export_handle.assert_called_once_with(Path(expected_requirements_file))
+    # test: ExportLock called only once (didn't know how to test that he parameters are set correctly
     patch_export_lock.assert_called_once()
 
+    # test: pip call has the expected parameters
     patch_check_call.assert_called_once()
     patch_check_call_args = patch_check_call.call_args[0][0]
     assert expected_requirements_file in patch_check_call_args
