@@ -9,8 +9,6 @@ pre-commit-setup:
 tests *args:
     poetry run pytest {{args}}
 
-run *args:
-    poetry run poetry-aws-sam {{args}}
-
-poetry *args:
-     .venv/bin/poetry {{args}}
+# run sam from the .venv virtualenv
+sam *args:
+    .venv/bin/poetry sam {{args}}

@@ -25,3 +25,14 @@ You can read about installation and usage here: [just - github](https://github.c
 - show all the commands by running only just: `just`
 - set up git hooks through the pre-commit project: `just pre-commit-setup`
 - run the unit tests: `just tests`
+
+### Install locally to test iteratively
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+just sam # same as: .venv/bin/poetry sam
+```
+
+This will set up a virtual env and have the sam ready as a plugin
