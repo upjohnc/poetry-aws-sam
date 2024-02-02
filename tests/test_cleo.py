@@ -220,12 +220,53 @@ def test_execute_build_lambda(mocker):
     patch_export_handle.assert_called_once_with(Path(expected_requirements_file))
 
     patch_check_call.assert_called_once()
-    breakpoint()
     patch_check_call_args = patch_check_call.call_args[0][0]
     assert expected_requirements_file in patch_check_call_args
     assert "fake_root/.aws-sam/build/1" in patch_check_call_args
 
 
 # passing parameters
+def test_execute_passing_parameters(mocker):
+    """
+    no parameters passed
+    one lambda
+    mock out build_lambda
+    """
+    # Given
+    fake_root_dir = Path("fake_root")
+    fake_template = "basic"
+    expected_requirements_file = "fake_root/.aws-sam/build/1/12/requirements.txt"
 
-# tests aronud export lock
+    patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
+    patch_sam.return_value.lambdas = [fake_aws_lambda_one]
+    patch_sam.return_value.invoke_sam_build.return_value.returncode = 0
+
+    _ = mocker.patch("poetry_aws_sam.sam.AwsBuilder.root_dir", new_callable=PropertyMock(return_value=fake_root_dir))
+
+    patch_export_lock = mocker.patch("poetry_aws_sam.sam.ExportLock")
+    patch_export_handle = patch_export_lock.return_value.handle
+
+    patch_check_call = mocker.patch("poetry_aws_sam.sam.check_call")
+    # When
+    application = Application()
+    application.add(SamCommand())
+
+    command = application.find("sam")
+    command_tester = CommandTester(command)
+    command_tester.execute(
+        f"--sam-template={fake_template} --without-hashes --without-urls --only main --with-credentials"
+    )
+
+    # Then
+    patch_sam.assert_called_once_with(sam_exec="sam", template=fake_root_dir / fake_template)
+    patch_sam.return_value.invoke_sam_build.assert_called_once_with(
+        build_dir=str(fake_root_dir / SAM_BUILD_DIR_NAME), params=None
+    )
+
+    patch_export_handle.assert_called_once_with(Path(expected_requirements_file))
+    patch_export_lock.assert_called_once()
+
+    patch_check_call.assert_called_once()
+    patch_check_call_args = patch_check_call.call_args[0][0]
+    assert expected_requirements_file in patch_check_call_args
+    assert "fake_root/.aws-sam/build/1" in patch_check_call_args
