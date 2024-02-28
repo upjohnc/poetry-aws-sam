@@ -10,7 +10,7 @@ assume:
 
 To install in the same environment as the poetry on your system:
 
-`poetry self add git+https://github.com/Chad-UpJohn_ameritas/poetry-aws-sam.git`
+`poetry self add git+https://github.com/APICOE-poetry-aws-sam/poetry-aws-sam.git`
 
 This will add sam as a command in poetry. If you run `poetry list`, you will
 see `sam` as an option amongst the commands
