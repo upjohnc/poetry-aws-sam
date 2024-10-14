@@ -4,3 +4,4 @@ requirements.txt
 .aws-sam/
 .venv/
 venv/
+dist/

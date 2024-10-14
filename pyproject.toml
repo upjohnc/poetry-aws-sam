@@ -1,10 +1,12 @@
 [tool.poetry]
 name = "poetry-aws-sam"
 version = "1.1.0"
-description = ""
-authors = ["Chad Upjohn <chad.upjohn@ameritas.com>"]
+description = "Poetry plugin to work with AWS's SAM serverless tool"
+authors = ["Chad Upjohn <chad.upjohn@pinnsg.com>"]
 readme = "README.md"
 packages = [{include = "poetry_aws_sam", from="src"}]
+repository = "https://github.com/upjohnc/poetry-aws-sam"
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
