@@ -12,8 +12,26 @@ from poetry_aws_sam.sam import SAM_BUILD_DIR_NAME
 fake_aws_lambda_one = AwsLambda(name="1", path=Path("12"))
 fake_aws_lambda_two = AwsLambda(name="2", path=Path("aa"))
 
+fake_root_name = "fake_root"
 
-def test_execute_one_lambda(mocker):
+
+@pytest.fixture
+def fake_root_dir():
+    fake_root_dir = Path(fake_root_name)
+
+    yield fake_root_dir
+
+    # clean up the fake directory
+    for root, dirs, files in fake_root_dir.walk(top_down=False):
+        for name in files:
+            (root / name).unlink()
+        for name in dirs:
+            (root / name).rmdir()
+    if fake_root_dir.exists():
+        fake_root_dir.rmdir()
+
+
+def test_execute_one_lambda(mocker, fake_root_dir):
     """
     Test a single lambda build
 
@@ -23,8 +41,6 @@ def test_execute_one_lambda(mocker):
     - mock out build_lambda method
     """
     # Given
-    fake_root_dir = Path("fake_root")
-
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
     patch_sam.return_value.lambdas = [fake_aws_lambda_one]
     patch_sam.return_value.invoke_sam_build.return_value.returncode = 0
@@ -52,7 +68,7 @@ def test_execute_one_lambda(mocker):
     patch_build_lambda.assert_called_once_with(aws_lambda=fake_aws_lambda_one)
 
 
-def test_execute_two_lambda(mocker):
+def test_execute_two_lambda(mocker, fake_root_dir):
     """
     Test two lambdas buid
 
@@ -62,8 +78,6 @@ def test_execute_two_lambda(mocker):
     - mock out build_lambda
     """
     # Given
-    fake_root_dir = Path("fake_root")
-
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
     patch_sam.return_value.lambdas = [fake_aws_lambda_one, fake_aws_lambda_two]
     patch_sam.return_value.invoke_sam_build.return_value.returncode = 0
@@ -97,7 +111,7 @@ def test_execute_two_lambda(mocker):
     assert second_call.kwargs["aws_lambda"] == fake_aws_lambda_two
 
 
-def test_execute_no_lambdas(mocker):
+def test_execute_no_lambdas(mocker, fake_root_dir):
     """
     Test that no lambdas are built
 
@@ -107,7 +121,6 @@ def test_execute_no_lambdas(mocker):
     - mock out build_lambda
     """
     # Given
-    fake_root_dir = Path("fake_root")
 
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
     patch_sam.return_value.lambdas = []
@@ -139,14 +152,12 @@ def test_execute_no_lambdas(mocker):
     assert "Build successful" in command_tester.io.fetch_output()
 
 
-def test_execute_attribute_error(mocker):
+def test_execute_attribute_error(mocker, fake_root_dir):
     """
     Test that a call to create an instance of Sam
     returns an AttributeError. Should abort.
     """
     # Given
-    fake_root_dir = Path("fake_root")
-
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", side_effect=AttributeError)
     _ = mocker.patch("poetry_aws_sam.sam.AwsBuilder.root_dir", new_callable=PropertyMock(return_value=fake_root_dir))
     # When
@@ -168,13 +179,11 @@ def test_execute_attribute_error(mocker):
     assert "Unsupported type for a 'CodeUri' or 'Handler'." in command_tester.io.fetch_error()
 
 
-def test_execute_non_zero(mocker):
+def test_execute_non_zero(mocker, fake_root_dir):
     """
     Test a non-zero return when the sam build runs
     """
     # Given
-    fake_root_dir = Path("fake_root")
-
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
     patch_sam.return_value.invoke_sam_build.return_value.returncode = 1
 
@@ -205,7 +214,7 @@ def test_execute_non_zero(mocker):
     assert "SAM build failed!" in command_tester.io.fetch_error()
 
 
-def test_execute_build_lambda(mocker):
+def test_execute_build_lambda(mocker, fake_root_dir):
     """
     Test that the call to the build_lambda from build_standard
 
@@ -214,8 +223,7 @@ def test_execute_build_lambda(mocker):
     - one lambda
     """
     # Given
-    fake_root_dir = Path("fake_root")
-    expected_requirements_file = "fake_root/.aws-sam/build/1/12/requirements.txt"
+    expected_requirements_file = f"{fake_root_name}/.aws-sam/build/1/12/requirements.txt"
 
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
     patch_sam.return_value.lambdas = [fake_aws_lambda_one]
@@ -250,17 +258,16 @@ def test_execute_build_lambda(mocker):
     patch_check_call.assert_called_once()
     patch_check_call_args = patch_check_call.call_args[0][0]
     assert expected_requirements_file in patch_check_call_args
-    assert "fake_root/.aws-sam/build/1" in patch_check_call_args
+    assert f"{fake_root_name}/.aws-sam/build/1" in patch_check_call_args
 
 
-def test_execute_passing_parameters(mocker):
+def test_execute_passing_parameters(mocker, fake_root_dir):
     """
     Test that passing parameters functions as expected
     """
     # Given
-    fake_root_dir = Path("fake_root")
     fake_template = "basic"
-    expected_requirements_file = "fake_root/.aws-sam/build/1/12/requirements.txt"
+    expected_requirements_file = f"{fake_root_name}/.aws-sam/build/1/12/requirements.txt"
 
     patch_sam = mocker.patch("poetry_aws_sam.sam.Sam", return_value=MagicMock())
     patch_sam.return_value.lambdas = [fake_aws_lambda_one]
@@ -299,4 +306,4 @@ def test_execute_passing_parameters(mocker):
     patch_check_call.assert_called_once()
     patch_check_call_args = patch_check_call.call_args[0][0]
     assert expected_requirements_file in patch_check_call_args
-    assert "fake_root/.aws-sam/build/1" in patch_check_call_args
+    assert f"{fake_root_name}/.aws-sam/build/1" in patch_check_call_args
