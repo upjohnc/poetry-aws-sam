@@ -1,0 +1,32 @@
+name: Format Lint Test
+
+on:
+  workflow_call:
+
+jobs:
+  lint-format-test:
+    name: Format & Isort Python Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4.2.1
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5.2.0
+        with:
+          python-version: '3.12'
+      - name: Ensure pip is latest version
+        run: python -m pip install -U pip
+      - name: Install Poetry
+        run: python -m pip install poetry
+      - name: Set poetry virtual env
+        run: poetry install --with dev --sync
+      - name: Black Format Check
+        run: poetry run black --check .
+      - name: Isort Import Check
+        run: poetry run isort --check .
+      - name: Poetry Check pyproject
+        run: poetry run poetry check
+      - name: Poetry Confirm Lock File
+        run: poetry run poetry check --lock
+      - name: Run unit tests
+        run: poetry run pytest
