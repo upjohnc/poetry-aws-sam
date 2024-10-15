@@ -1,0 +1,21 @@
+name: Merge to Master
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  lint-format-test:
+    uses: ./.github/workflows/format_lint_test.yml
+  publish:
+    name: ttt
+  tag:
+    name: Add git tag to release
+    steps:
+      - name: Tag release
+        run: |
+          VERSION=v$(poetry version --short)
+          git tag $VERSION
+          git push origin $VERSION
+
