@@ -1,0 +1,12 @@
+name: PR Push
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  lint-format-test:
+    uses: ./.github/workflows/format_lint_test.yml
