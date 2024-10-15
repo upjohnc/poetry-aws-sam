@@ -6,8 +6,11 @@ on:
       - 'master'
 
 jobs:
+  lint-format-test:
+    uses: ./.github/workflows/format_lint_test.yml
   publish:
     name: Publish version to pypi
+    needs: lint-format-test
     runs-on: ubuntu-latest
     environment:
       name: pypi
