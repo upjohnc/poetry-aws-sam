@@ -21,12 +21,16 @@ def fake_root_dir():
 
     yield fake_root_dir
 
-    # clean up the fake directory
-    for root, dirs, files in fake_root_dir.walk(top_down=False):
-        for name in files:
-            (root / name).unlink()
-        for name in dirs:
-            (root / name).rmdir()
+    def rm_tree(pth: Path):
+        for child in pth.rglob("*"):
+            if child.is_file():
+                child.unlink()
+            else:
+                rm_tree(child)
+            child.rmdir()
+
+    rm_tree(fake_root_dir)
+
     if fake_root_dir.exists():
         fake_root_dir.rmdir()
 
