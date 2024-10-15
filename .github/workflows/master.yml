@@ -1,0 +1,10 @@
+name: Merge to Master
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  lint-format-test:
+    uses: ./.github/workflows/format_lint_test.yml
