@@ -80,3 +80,16 @@ just sam # same as: .venv/bin/poetry sam
 
 This will set up a virtual env and have the sam ready as a plugin
 
+## pypi deployment
+
+The `master.yml` workflow will deploy to pypi.  This means that
+the project version in `pyproject.toml` will need to be increased
+when merging into the `master` branch.
+
+A good dev flow:
+- create new branch
+- update version number of project
+    - can use `poetry version minor` to increase the minor version
+- with code update, create pull request to merge into `master`
+- approve pull request and then merge into `master`
+- the workflow will then deploy to pypi
