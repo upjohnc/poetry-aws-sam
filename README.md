@@ -19,6 +19,7 @@ instructions at this url:
 [aws-sam-cli installation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html#install-sam-cli-instructions)
 
 To install in the same environment as the poetry on your system:
+
 ```bash
 pip install poetry
 poetry self add poetry-aws-sam
@@ -27,6 +28,24 @@ poetry self add poetry-aws-sam
 This will add sam as a command in poetry. If you run `poetry list`, you will
 see `sam` as an option amongst the commands.  You can then call
 `poetry sam --help` for options in running `sam` in your poetry project.
+
+The plugin replaces the `sam build` command.
+
+Sam deployment steps
+
+```bash
+sam build
+sam package
+sam deploy
+```
+
+Deployment steps using poetry-aws-sam:
+
+```bash
+poetry sam --without-hashes
+sam package
+sam deploy
+```
 
 ## History
 
