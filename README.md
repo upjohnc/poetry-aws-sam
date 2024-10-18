@@ -50,8 +50,9 @@ sam deploy
 ## History
 
 The plugin was created while Pinnacle Solutions Group was working
-with Ameritas on one of its serverless projects.  Ameritas used SAM
-for its serverless management.  The company ended a vendor's contract,
+with one of its clients on a projects built on aws serverless resources.
+The client used SAM for its serverless management.
+The company ended a vendor's contract,
 which led to the team not having a repository for its package whl's.
 The team shifted to using poetry and installing its packages from
 a github url.  With the change to poetry, the team needed to update
