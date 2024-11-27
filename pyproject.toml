@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry-aws-sam"
-version = "1.4.1"
+version = "1.4.2"
 description = "Poetry plugin to work with AWS's SAM serverless tool"
 authors = ["Chad Upjohn <chad.upjohn@pinnsg.com>"]
 readme = "README.md"
