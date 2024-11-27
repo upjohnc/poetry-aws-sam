@@ -75,6 +75,9 @@ class AwsBuilder:
             raise
         self._io.write_line("Building lambda functions ...")
         build_dir = str(self.sam_build_location)
+        # 'sam build' creates the build dir and copies
+        # the app code into that dir
+        # same result as running 'sam build' without a requirements file
         result = sam.invoke_sam_build(build_dir=build_dir, params=None)
         if result.returncode != 0:
             self._io.write_error_line(result.stderr)
@@ -82,6 +85,9 @@ class AwsBuilder:
 
         for aws_lambda in sam.lambdas:
             self._io.write_line(f"{aws_lambda.name} ...")
+            # 'build_lambda' adds the third party packages
+            # into the build directory using poetry to create
+            # the requirements file
             self.build_lambda(aws_lambda=aws_lambda)
             self._io.write_line("success")
 
