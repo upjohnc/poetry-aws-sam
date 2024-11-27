@@ -47,6 +47,8 @@ class AwsBuilder:
                 "-m",
                 "pip",
                 "install",
+                "--platform manylinux2014_x86_64",
+                "--only-binary=:all:",
                 "--upgrade",
                 "--disable-pip-version-check",
                 "--no-python-version-warning",
