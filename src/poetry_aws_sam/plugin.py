@@ -1,4 +1,3 @@
-from cleo.commands.command import Command
 from cleo.helpers import option
 from poetry.console.commands.group_command import GroupCommand
 from poetry.plugins.application_plugin import ApplicationPlugin
