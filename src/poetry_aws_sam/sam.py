@@ -63,7 +63,8 @@ class AwsBuilder:
             stderr=PIPE,
             shell=False,
         )
-        requirements_file.unlink()
+        if requirements_file.exists():
+            requirements_file.unlink()
 
     def build_standard(self) -> int:
         try:
